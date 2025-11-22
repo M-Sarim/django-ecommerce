@@ -76,7 +76,7 @@ def decrease_from_cart(request, slug):
             messages.error(request, "This item was not in your cart")
             return redirect("product:product-detail", slug=slug)
     else:
-        messages.error(request, "You donot have an active order")
+        messages.error(request, "You do not have an active order")
         return redirect("product:product-detail", slug=slug)
 
 
@@ -103,7 +103,7 @@ def remove_from_cart(request, slug):
             messages.error(request, "This item was not in your cart")
             return redirect("product:product-detail", slug=slug)
     else:
-        messages.error(request, "You donot have an active order")
+        messages.error(request, "You do not have an active order")
         return redirect("product:product-detail", slug=slug)
 
 

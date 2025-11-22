@@ -1,6 +1,6 @@
 django>=4.1,<=4.5
-pillow==10.3.0
-psycopg2-binary==2.9.9
+pillow
+psycopg[binary]
 django-allauth==0.63.3
 django_countries==7.6.1
 django-crispy-forms==2.1
@@ -8,4 +8,4 @@ django-dotenv
 crispy-bootstrap5
 stripe==9.4.0
 reportlab # for generating the PDF files
-pre-commit==3.7.1
+pre-commit

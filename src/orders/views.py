@@ -32,7 +32,7 @@ class OrderSummary(View):
                 self.request, template_name=self.template_name, context=context
             )
         except ObjectDoesNotExist:
-            messages.warning(self.request, "You donot have an active order")
+            messages.warning(self.request, "You do not have an active order")
             return render(self.request, template_name=self.template_name, context={})
 
 
@@ -45,7 +45,7 @@ class CheckoutView(View):
         try:
             order = Order.objects.get(user=user, ordered=False)
         except Order.DoesNotExist:
-            messages.warning(self.request, "You donot have an active order")
+            messages.warning(self.request, "You do not have an active order")
             return redirect("/")
         form = CheckoutForm()
         context = {
@@ -61,35 +61,33 @@ class CheckoutView(View):
         form = CheckoutForm(self.request.POST or None)
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
-            """Procceed if only user have active order"""
         except ObjectDoesNotExist:
-            messages.error("You donot have active order.")
+            messages.error(self.request, "You do not have an active order.")
             return redirect("order:checkout")
+
         if form.is_valid():
-            cleaned_data = form.cleaned_data
-            print("*" * 32)
-            print(cleaned_data)
-            print("*" * 32)
-            street_address = form.cleaned_data.get("street_address")
-            apartment_address = form.cleaned_data.get("apartment_address")
-            country = form.cleaned_data.get("shipping_country")
-            zip = form.cleaned_data.get("zip")
-            payment_option = form.cleaned_data.get("payment_option")  # noqa
-            billing_address = Address(
-                user=user,
-                street_address=street_address,
-                apartment_address=apartment_address,
-                country=country,
-                zip=zip,
-            )
-            billing_address.save()
-            order.billing_address = billing_address
-            order.save()
-            # REdirect to the selected payment option
-            # for now stripe is only payment option
+            self.save_billing_address(user, order, form)
             return redirect("payment:payment-home")
-        messages.error(self.request, "Failed to Checkout. Please try again Later!!!")
+
+        messages.error(self.request, "Failed to Checkout. Please try again later.")
         return redirect("order:checkout")
+
+    def save_billing_address(self, user, order, form):
+        street_address = form.cleaned_data.get("street_address")
+        apartment_address = form.cleaned_data.get("apartment_address")
+        country = form.cleaned_data.get("country")
+        zip_code = form.cleaned_data.get("zip")
+
+        billing_address = Address(
+            user=user,
+            street_address=street_address,
+            apartment_address=apartment_address,
+            country=country,
+            zip=zip_code,
+        )
+        billing_address.save()
+        order.billing_address = billing_address
+        order.save()
 
 
 @login_required

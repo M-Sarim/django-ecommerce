@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load cart_template_tags %}
 
+
 <!-- Apply the grey lighten-3 background -->
 <div class="bg-light">
   {% block content %}
@@ -33,7 +34,7 @@
               <!-- Address-2 input field -->
               <div class="form-floating mb-3">
                 <!-- <input type="email" class="form-control" id="floatingInput" placeholder="Appartment"> -->
-                {{ form.apartmart_address }}
+                {{ form.apartment_address }}
                 <label for="floatingInput">Address 2(Optional)</label>
               </div>
               <!-- Grid row -->
@@ -43,7 +44,7 @@
                 <div class="col-lg-4 col-md-12 mb-4">
 
                   <label for="country">Country</label>
-                  {{ form.shipping_country }}
+                  {{ form.country }}
                   <!-- <div class="invalid-feedback">
                       Please select a valid country.
                     </div> -->
@@ -120,6 +121,5 @@
 
     </div>
   </main>
-
-  {% endblock content %}
+{% endblock content %}
 </div>

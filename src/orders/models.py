@@ -27,13 +27,19 @@ class OrderProduct(models.Model):
         return self.quantity * self.product.discounted_price
 
     def get_total_product_price(self):
-        if self.get_total_discounted_product_price() > 0:
+        if (
+            self.product.discounted_price > 0
+            and self.product.discounted_price < self.product.price
+        ):
             return self.get_total_discounted_product_price()
         else:
             return self.get_total_orginal_product_price()
 
     def get_saving(self):
-        if self.get_total_discounted_product_price() > 0:
+        if (
+            self.product.discounted_price > 0
+            and self.product.discounted_price < self.product.price
+        ):
             return (
                 self.get_total_orginal_product_price()
                 - self.get_total_discounted_product_price()
@@ -82,8 +88,9 @@ class Order(models.Model):
         total = 0
         for ordered_product in self.products.all():
             total += ordered_product.get_total_product_price()
-        if self.coupon and total > self.coupon.amount:
-            total -= self.coupon.amount
+        if self.coupon:
+            # Ensure coupon discount doesn't exceed total price
+            total -= min(total, self.coupon.amount)
         return total
 
 

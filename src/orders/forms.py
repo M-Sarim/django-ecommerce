@@ -16,7 +16,7 @@ class CheckoutForm(forms.Form):
         strip=True,
     )
 
-    apartmart_address = forms.CharField(
+    apartment_address = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
@@ -26,7 +26,7 @@ class CheckoutForm(forms.Form):
         required=False,
         strip=True,
     )
-    shipping_country = CountryField(blank_label="(select country)").formfield(
+    country = CountryField(blank_label="(select country)").formfield(
         required=False,
         widget=CountrySelectWidget(
             attrs={"class": "custom-select d-block w-100", "id": "country"}

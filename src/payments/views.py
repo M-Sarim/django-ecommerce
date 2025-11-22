@@ -27,7 +27,7 @@ class PaymentView(View):
         try:
             order = Order.objects.get(user=user, ordered=False)
         except Order.DoesNotExist:
-            messages.warning(self.request, message="You donot have active order")
+            messages.warning(self.request, message="You do not have an active order")
             return redirect("order:order-summary")
         context = {
             "order": order,
@@ -117,7 +117,7 @@ def get_coupon(request, code):
         return coupon
     except Coupon.DoesNotExist:
         messages.warning(request, "This token does not exist!!!")
-        return redirect("order:checkout")
+        return None
 
 
 @method_decorator(decorator=login_required, name="dispatch")
@@ -131,20 +131,23 @@ class RedeemCouponView(View):
                 code = form.cleaned_data.get("code")
                 order = Order.objects.get(user=user, ordered=False)
                 coupon = get_coupon(self.request, code)
-                # one order shuld be associated with only one coupon
+                # Check if coupon exists
+                if not coupon:
+                    return redirect("order:checkout")
+                # one order should be associated with only one coupon
                 if order.coupon:
-                    messages.info(self.request, "Coupon already assoiciated with order")
+                    messages.info(self.request, "Coupon already associated with order")
                     return redirect("order:checkout")
                 order.coupon = coupon
                 order.save()
                 # decrease coupon remaining time
                 order.coupon.remaining_time -= 1
-                order.coupon.save()  # Fixed variable name here from 'coupon' to 'order.coupon'
+                order.coupon.save()
                 messages.success(self.request, "Successfully added coupon")
                 return redirect("order:checkout")
 
             except Order.DoesNotExist:
                 messages.warning(
-                    self.request, "You don't have an active order to redeem a coupon"
-                )  # Fixed typo here
-                return redirect("order:checkout")  # Added return statement
+                    self.request, "You do not have an active order to redeem a coupon"
+                )
+                return redirect("order:checkout")
