@@ -1,5 +1,34 @@
 # Django E-commerce
 
+> ## 🎓 Software Re-Engineering Assignment 1
+> **GitHub Username:** M-Sarim
+> **Student Roll Number:** [Insert Your Roll Number Here]
+> 
+> ### Task 2: Docker Execution Steps
+> To run this project locally via Docker, the following commands were used:
+> 1. **Build the image:** 
+>    docker build -t sre-assignment-1 .
+> 2. **Run the container:**
+>    docker run -p 8000:8000 sre-assignment-1
+> 
+> ### Task 4: SonarQube Analysis Steps
+> To perform static code analysis, SonarQube and SonarScanner were deployed via Docker:
+> 1. **Start the SonarQube Server:**
+>    ```bash
+>    docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+>    ```
+> 2. **Run the SonarScanner (Excluding static libraries to prevent memory bottlenecks):**
+>    ```bash
+>    docker run --rm \
+>      -e SONAR_HOST_URL="[http://host.docker.internal:9000](http://host.docker.internal:9000)" \
+>      -v "$(pwd):/usr/src" \
+>      sonarsource/sonar-scanner-cli \
+>      -Dsonar.projectKey=SRE-Assignment-01 \
+>      -Dsonar.token=<YOUR_SONARQUBE_TOKEN> \
+>      -Dsonar.exclusions="**/static/**,**/static_cdn/**,**/migrations/**"
+>    ```
+> ---
+
 A robust Django-based e-commerce web application designed to facilitate seamless online shopping experiences. This platform offers a user-friendly interface for customers to browse products, manage their cart, and securely complete purchases with integrated payment processing.
 
 ## Features
@@ -29,74 +58,71 @@ A robust Django-based e-commerce web application designed to facilitate seamless
 ### Prerequisites
 
 - Python 3.8 or higher
-- pip (Python package manager)
+- Docker & Docker Desktop (Recommended)
 - Git
 
-### Installation
+### Installation (Standard)
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/realsanjeev/django-ecommerce.git
+   git clone [https://github.com/M-Sarim/django-ecommerce.git](https://github.com/M-Sarim/django-ecommerce.git)
    cd django-ecommerce
-   ```
+
+```
 
 2. **Create and Activate Virtual Environment**
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+```
+
 
 3. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+
+```
+
 
 4. **Configure Environment Variables**
+Create a `.env` file in the `src/` directory with the following:
+```env
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+STRIPE_SECRET_KEY=your-stripe-secret-key
 
-   Create a `.env` file in the `src/` directory with the following:
-   ```env
-   SECRET_KEY=your-secret-key-here
-   DEBUG=True
-   STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
-   STRIPE_SECRET_KEY=your-stripe-secret-key
-   ```
+```
+
 
 5. **Run Migrations**
-   ```bash
-   cd src
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
+```bash
+cd src
+python manage.py makemigrations
+python manage.py migrate
+
+```
+
 
 6. **Create Superuser (Optional)**
-   ```bash
-   python manage.py createsuperuser
-   ```
+```bash
+python manage.py createsuperuser
+
+```
+
 
 7. **Start Development Server**
-   ```bash
-   python manage.py runserver
-   ```
+```bash
+python manage.py runserver
+
+```
+
+
 
 The application will be available at `http://localhost:8000`
 
 **Default Admin Credentials**: `admin@admin.com` / `admin`
-
-### Docker Installation (Alternative)
-
-If you have Docker installed:
-
-1. **Build the Docker Image**
-   ```bash
-   docker build -t django-ecommerce .
-   ```
-
-2. **Run the Container**
-   ```bash
-   docker run -p 8000:8000 --name django-ecommerce-container django-ecommerce
-   ```
-
-Access the application at `http://localhost:8000`
 
 ## Development
 
@@ -105,13 +131,17 @@ Access the application at `http://localhost:8000`
 This project uses `pre-commit` hooks to maintain code quality.
 
 **Run pre-commit on all files:**
+
 ```bash
 pre-commit run --all-files
+
 ```
 
 **Update hooks to latest versions:**
+
 ```bash
 pre-commit autoupdate
+
 ```
 
 ### Running Tests
@@ -119,18 +149,8 @@ pre-commit autoupdate
 ```bash
 cd src
 python manage.py test
+
 ```
-
-## Screenshots
-
-### Authentication
-![Authentication Feature](images/authentication_image.png)
-
-### Product Ordering Process
-![Product Order Process](images/product_order_process.png)
-
-### Additional Features
-![Other Features](images/other_features.png)
 
 ## Project Structure
 
@@ -149,17 +169,8 @@ django-ecommerce/
 ├── requirements.txt
 ├── Dockerfile
 └── README.md
+
 ```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## License
 
@@ -167,11 +178,9 @@ This project is open source and available for educational purposes.
 
 ## Contact
 
-For questions or feedback, reach out via:
-
-- **GitHub**: [@realsanjeev](https://github.com/realsanjeev)
-- **LinkedIn**: [Connect on LinkedIn](https://linkedin.com/in/realsanjeev)
+* **Original Author**: [@realsanjeev](https://github.com/realsanjeev)
+* **Fork Maintained By**: [@M-Sarim](https://www.google.com/search?q=https://github.com/M-Sarim)
 
 ---
 
-Built with ❤️ using Django
+# Built with ❤️ using Django
